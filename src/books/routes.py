@@ -1,52 +1,25 @@
 """
-Main entrypoint for application.
+Routes for the books module.
 """
 
-import json
 from typing import List
 
-from fastapi import FastAPI, status
+from fastapi import APIRouter, status
 from fastapi.exceptions import HTTPException
-from pydantic import BaseModel
+
+from src.books.schemas import Book, BookUpdateModel
+from src.books.book_data import books
+
+book_router = APIRouter()
 
 
-app = FastAPI(
-    title="Books API",
-    version="0.1.0",
-    description="Simple CRUD API to manage books.",
-)
-
-
-class Book(BaseModel):
-    id: int
-    title: str
-    author: str
-    publisher: str
-    published_date: str
-    page_count: int
-    language: str
-
-
-class BookUpdateModel(BaseModel):
-    title: str
-    author: str
-    publisher: str
-    page_count: int
-    language: str
-
-
-# Loading books list
-with open("books.json", "r") as f:
-    books = json.load(f)
-
-
-@app.get("/books", response_model=List[Book])
+@book_router.get("/", response_model=List[Book])
 async def get_all_books():
     """Lists existing books."""
     return books
 
 
-@app.post("/books", status_code=status.HTTP_201_CREATED, response_model=Book)
+@book_router.post("/", status_code=status.HTTP_201_CREATED, response_model=Book)
 async def create_a_book(book_data: Book) -> dict:
     """Creates a new book."""
     new_book = book_data.model_dump()
@@ -56,7 +29,7 @@ async def create_a_book(book_data: Book) -> dict:
     return new_book
 
 
-@app.get("/books/{book_id}", response_model=Book)
+@book_router.get("/{book_id}", response_model=Book)
 async def get_book(book_id: int) -> dict:
     """Returns a specific book by its ID."""
     for book in books:
@@ -66,7 +39,7 @@ async def get_book(book_id: int) -> dict:
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found.")
 
 
-@app.patch("/books/{book_id}", response_model=Book)
+@book_router.patch("/{book_id}", response_model=Book)
 async def update_book(book_id: int, book_update_data: BookUpdateModel) -> dict:
     """Updates a specific book by its ID."""
 
@@ -82,7 +55,7 @@ async def update_book(book_id: int, book_update_data: BookUpdateModel) -> dict:
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
 
 
-@app.delete("/books/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
+@book_router.delete("/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_book(book_id: int):
     """Deletes a specific book by its ID."""
     for book in books:
