@@ -4,7 +4,7 @@
 
 ## 💡 Project's Idea
 
-This project was developed to create a web application with FastAPI.
+This project was developed to create a REST API for a book review web service, using FastAPI.
 
 ## 🔍 Features
 
@@ -16,8 +16,11 @@ During the development of this project, the following techologies were used:
 
 - [Python](https://www.python.org/)
 - [FastAPI](https://fastapi.tiangolo.com/)
+- [Pydantic](https://docs.pydantic.dev/latest/)
 
 ## 💻 Project Configuration
+
+Note: the project was developed with Python version **3.9.13**.
 
 ### First, create a new virtual environment on the root directory
 

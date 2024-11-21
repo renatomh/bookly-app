@@ -12,10 +12,10 @@ install-docker:
 
 # This command starts the application in dev mode 
 dev:
-	fastapi dev main.py
+	fastapi dev src/
 
 # This command starts the application in prod mode 
 run:
-	fastapi run main.py
+	fastapi run src/
 
 .PHONY: install-docker dev run
