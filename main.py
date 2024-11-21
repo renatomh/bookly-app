@@ -46,7 +46,7 @@ async def get_all_books():
     return books
 
 
-@app.post("/books", status_code=status.HTTP_201_CREATED)
+@app.post("/books", status_code=status.HTTP_201_CREATED, response_model=Book)
 async def create_a_book(book_data: Book) -> dict:
     """Creates a new book."""
     new_book = book_data.model_dump()
@@ -56,7 +56,7 @@ async def create_a_book(book_data: Book) -> dict:
     return new_book
 
 
-@app.get("/books/{book_id}")
+@app.get("/books/{book_id}", response_model=Book)
 async def get_book(book_id: int) -> dict:
     """Returns a specific book by its ID."""
     for book in books:
@@ -66,7 +66,7 @@ async def get_book(book_id: int) -> dict:
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found.")
 
 
-@app.patch("/books/{book_id}")
+@app.patch("/books/{book_id}", response_model=Book)
 async def update_book(book_id: int, book_update_data: BookUpdateModel) -> dict:
     """Updates a specific book by its ID."""
 
