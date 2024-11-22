@@ -2,11 +2,25 @@
 Model schemas for the application.
 """
 
+from datetime import datetime, date
+
 from pydantic import BaseModel
+import uuid
 
 
 class Book(BaseModel):
-    id: int
+    uid: uuid.UUID
+    created_at: datetime
+    updated_at: datetime
+    title: str
+    author: str
+    publisher: str
+    published_date: date
+    page_count: int
+    language: str
+
+
+class BookCreateModel(BaseModel):
     title: str
     author: str
     publisher: str

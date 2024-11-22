@@ -1,6 +1,6 @@
 """Models for the 'books' module."""
 
-from datetime import datetime
+from datetime import datetime, date
 
 from sqlmodel import SQLModel, Field, Column
 import sqlalchemy.dialects.postgresql as pg
@@ -34,7 +34,7 @@ class Book(SQLModel, table=True):
     title: str
     author: str
     publisher: str
-    published_date: str
+    published_date: date
     page_count: int
     language: str
 
