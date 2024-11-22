@@ -43,7 +43,7 @@ $ source ./env/bin/activate # On MacOS/Unix machines
 
 ### Creating config files
 
-Create an _.env_ file on the _src_ directory, with all needed variables, credentials and API keys, according to the sample provided (_[example.env](./src/example.env)_).
+Create an _.env_ file on the root directory, with all needed variables, credentials and API keys, according to the sample provided (_[example.env](./example.env)_).
 
 ### Setting up the database
 
