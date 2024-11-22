@@ -41,6 +41,18 @@ $ source ./env/bin/activate # On MacOS/Unix machines
 (env) $ pip install -r requirements.txt
 ```
 
+### Creating config files
+
+Create an _.env_ file on the _src_ directory, with all needed variables, credentials and API keys, according to the sample provided (_[example.env](./src/example.env)_).
+
+### Setting up the database
+
+Run the command below to create the PostgreSQL database locally in your machine (you should have Docker installed, there's also a Make command for that):
+
+```bash
+make postgresql
+```
+
 ## ⏯️ Running
 
 To run the project in a development environment, execute the following command on the root directory, with the virtual environment activated.
