@@ -17,6 +17,14 @@ install-docker:
 postgresql:
 	docker run --name postgres-bookly -p ${SQL_PORT}:5432 -e POSTGRES_USER=${SQL_USER} -e POSTGRES_PASSWORD=${SQL_PASS} -e POSTGRES_DB=${SQL_DB} -v pgdata:/var/lib/postgresql/data -d postgres:15-alpine
 
+# This command runs the required migrations up for the database
+migrateup:
+	alembic upgrade head
+
+# This command downgrades all migrations on the database
+migratedown:
+	alembic downgrade base
+
 # This command starts the application in dev mode 
 dev:
 	fastapi dev src/
@@ -25,4 +33,4 @@ dev:
 run:
 	fastapi run src/
 
-.PHONY: install-docker postgresql dev run
+.PHONY: install-docker postgresql migrateup migratedown dev run

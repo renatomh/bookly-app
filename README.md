@@ -17,6 +17,9 @@ During the development of this project, the following techologies were used:
 - [Python](https://www.python.org/)
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [Pydantic](https://docs.pydantic.dev/latest/)
+- [Alembic (Migrations)](https://alembic.sqlalchemy.org/en/latest/)
+- [SQLAlchemy (ORM)](https://www.sqlalchemy.org/)
+- [Black Formatter](https://github.com/psf/black)
 
 ## 💻 Project Configuration
 
@@ -51,6 +54,34 @@ Run the command below to create the PostgreSQL database locally in your machine 
 
 ```bash
 make postgresql
+```
+
+## 💾 Database Migrations
+
+Once the SQL server is ready and the required credentials to access it are present in the _.env_ file, you can run the migrations with the command:
+
+```bash
+(env) $ alembic upgrade head
+```
+
+You can also downgrade the migrations with the following command:
+
+```bash
+(env) $ alembic downgrade base
+```
+
+Alternatively, you can migrate up or down by a specific number of revision, or to a specific revision:
+
+```bash
+(env) $ alembic upgrade +2 # Migrating up 2 revisions
+(env) $ alembic downgrade -1 # Migrating down 1 revision
+(env) $ alembic upgrade db9257fac0e2 # Migrating to a specific revision
+```
+
+To generate new revisions for the migrations, when there are changes to the application models or new ones are created, you should import any new models in the [migrations/env.py](./migrations/env.py#L12) file, and then run the command below (where you can provide a custom short description for the update):
+
+```bash
+(env) $ alembic revision --autogenerate -m "revision description"
 ```
 
 ## ⏯️ Running
