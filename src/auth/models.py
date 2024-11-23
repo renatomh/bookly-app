@@ -31,11 +31,12 @@ class User(SQLModel, table=True):
             onupdate=datetime.now,
         )
     )
-    username: str = Field(unique=True)
+    username: str
     email: str
     first_name: str
     last_name: str
     is_verified: bool = Field(default=False)
+    password_hash: str = Field(exclude=True)
 
     def __repr__(self):
         return f"<User {self.username}>"
