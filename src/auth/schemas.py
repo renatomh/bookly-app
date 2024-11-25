@@ -29,3 +29,7 @@ class UserLoginResponseModel(BaseModel):
     access_token: str
     refresh_token: str
     user: UserLoginSimplifiedModel
+
+
+class RefreshTokenResponseModel(BaseModel):
+    access_token: str
