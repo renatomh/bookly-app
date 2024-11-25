@@ -1,6 +1,6 @@
 """Utils function for the authentication module."""
 
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, timezone
 import logging
 
 from passlib.context import CryptContext
@@ -37,11 +37,11 @@ def create_access_token(
         "refresh": refresh,
     }
     if not refresh:
-        payload["exp"] = datetime.now() + (
+        payload["exp"] = datetime.now(timezone.utc) + (
             expiry if expiry else timedelta(seconds=ACCESS_TOKEN_EXPIRY)
         )
     else:
-        payload["exp"] = datetime.now() + (
+        payload["exp"] = datetime.now(timezone.utc) + (
             expiry if expiry else timedelta(days=REFRESH_TOKEN_EXPIRY)
         )
 
