@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     SQL_DB: str
     SQL_USER: str
     SQL_PASS: str
+    JWT_SECRET: str
+    JWT_ALGORITHM: str
 
     @property
     def database_url(self) -> str:
