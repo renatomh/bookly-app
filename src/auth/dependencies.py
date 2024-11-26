@@ -1,5 +1,7 @@
 """Dependencies for the authentication module."""
 
+from typing import List
+
 from fastapi import Request, status, Depends
 from fastapi.security import HTTPBearer
 from fastapi.security.http import HTTPAuthorizationCredentials
@@ -8,6 +10,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from .utils import decode_token
 from .service import UserService
+from .models import User
 from src.db.redis import token_in_blocklist
 from src.db.main import get_session
 
@@ -88,3 +91,20 @@ async def get_current_user(
     user = await user_service.get_user_by_email(user_email, session)
 
     return user
+
+
+class RoleChecker:
+
+    def __init__(self, allowed_roles: List[str]) -> None:
+        self.allowed_roles = allowed_roles
+
+    def __call__(self, current_user: User = Depends(get_current_user)) -> bool:
+        # NOTE: we might not even need to query the user, since the 'role' is now included in the token details
+        # TODO: check if we can access 'token_details' here
+        if current_user.role in self.allowed_roles:
+            return True
+
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You are not allowed to perform this action.",
+        )

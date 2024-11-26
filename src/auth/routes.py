@@ -19,7 +19,12 @@ from .schemas import (
 from .service import UserService
 from .models import User
 from .utils import create_access_token, decode_token, verify_password
-from .dependencies import RefreshTokenBearer, AccessTokenBearer, get_current_user
+from .dependencies import (
+    RefreshTokenBearer,
+    AccessTokenBearer,
+    RoleChecker,
+    get_current_user,
+)
 from src.db.main import get_session
 from src.db.redis import add_jti_to_blocklist
 
@@ -27,6 +32,8 @@ auth_router = APIRouter()
 user_service = UserService()
 refresh_token_bearer = RefreshTokenBearer()
 access_token_bearer = AccessTokenBearer()
+# This will define routes allowed only for specified user roles
+role_checker = RoleChecker(["admin", "user"])
 
 
 @auth_router.post("/signup", response_model=User, status_code=status.HTTP_201_CREATED)
@@ -79,6 +86,7 @@ async def login_users(
         user_data={
             "email": user.email,
             "user_uid": str(user.uid),
+            "role": user.role,
         }
     )
 
@@ -128,7 +136,10 @@ async def get_new_access_token(token_details: dict = Depends(refresh_token_beare
 
 
 @auth_router.get("/me", response_model=User, status_code=status.HTTP_200_OK)
-async def get_current_logged_user(user=Depends(get_current_user)):
+async def get_current_logged_user(
+    user=Depends(get_current_user),
+    _: bool = Depends(role_checker),  # This restricts the endpoint for authorized users
+):
     """Returns info about the current logged in user."""
     return user
 
