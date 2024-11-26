@@ -33,3 +33,7 @@ class UserLoginResponseModel(BaseModel):
 
 class RefreshTokenResponseModel(BaseModel):
     access_token: str
+
+
+class RevokeTokenResponseModel(BaseModel):
+    message: str = "Logged out successfully!"

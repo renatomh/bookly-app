@@ -14,16 +14,19 @@ from .schemas import (
     UserLoginModel,
     UserLoginResponseModel,
     RefreshTokenResponseModel,
+    RevokeTokenResponseModel,
 )
 from .service import UserService
 from .models import User
 from .utils import create_access_token, decode_token, verify_password
-from .dependencies import RefreshTokenBearer
+from .dependencies import RefreshTokenBearer, AccessTokenBearer
 from src.db.main import get_session
+from src.db.redis import add_jti_to_blocklist
 
 auth_router = APIRouter()
 user_service = UserService()
 refresh_token_bearer = RefreshTokenBearer()
+access_token_bearer = AccessTokenBearer()
 
 
 @auth_router.post("/signup", response_model=User, status_code=status.HTTP_201_CREATED)
@@ -122,3 +125,18 @@ async def get_new_access_token(token_details: dict = Depends(refresh_token_beare
             "access_token": new_access_token,
         },
     )
+
+
+@auth_router.get(
+    "/logout",
+    response_model=RevokeTokenResponseModel,
+    status_code=status.HTTP_200_OK,
+)
+async def revoke_token(token_details: dict = Depends(access_token_bearer)):
+    """Revokes a token to logout an user."""
+
+    jti = token_details["jti"]
+
+    await add_jti_to_blocklist(jti)
+
+    return JSONResponse(content={"message": "Logged out successfully!"})

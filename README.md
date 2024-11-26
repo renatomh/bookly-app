@@ -16,6 +16,8 @@ During the development of this project, the following techologies were used:
 
 - [Python](https://www.python.org/)
 - [FastAPI](https://fastapi.tiangolo.com/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Redis](https://redis.io/)
 - [Pydantic](https://docs.pydantic.dev/latest/)
 - [Alembic (Migrations)](https://alembic.sqlalchemy.org/en/latest/)
 - [SQLAlchemy (ORM)](https://www.sqlalchemy.org/)
@@ -48,12 +50,13 @@ $ source ./env/bin/activate # On MacOS/Unix machines
 
 Create an _.env_ file on the root directory, with all needed variables, credentials and API keys, according to the sample provided (_[example.env](./example.env)_).
 
-### Setting up the database
+### Setting up the databases
 
-Run the command below to create the PostgreSQL database locally in your machine (you should have Docker installed, there's also a Make command for that):
+Run the command below to create the PostgreSQL and Redis databases locally in your machine (you should have Docker installed, there's also a Make command for that):
 
 ```bash
 make postgresql
+make redis
 ```
 
 ## 💾 Database Migrations

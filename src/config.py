@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     SQL_PASS: str
     JWT_SECRET: str
     JWT_ALGORITHM: str
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
 
     @property
     def database_url(self) -> str:

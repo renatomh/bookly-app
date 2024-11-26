@@ -17,6 +17,10 @@ install-docker:
 postgresql:
 	docker run --name postgres-bookly -p ${SQL_PORT}:5432 -e POSTGRES_USER=${SQL_USER} -e POSTGRES_PASSWORD=${SQL_PASS} -e POSTGRES_DB=${SQL_DB} -v pgdata:/var/lib/postgresql/data -d postgres:15-alpine
 
+# This command creates a Redis container
+redis:
+	docker run --name redis-bookly -p ${REDIS_PORT}:6379 -v redisdata:/data -d redis:7-alpine
+
 # This command runs the required migrations up for the database
 migrateup:
 	alembic upgrade head
@@ -33,4 +37,4 @@ dev:
 run:
 	fastapi run src/
 
-.PHONY: install-docker postgresql migrateup migratedown dev run
+.PHONY: install-docker postgresql redis migrateup migratedown dev run
