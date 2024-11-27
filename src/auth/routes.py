@@ -14,12 +14,12 @@ from .schemas import (
     UserCreateModel,
     UserLoginModel,
     UserLoginResponseModel,
+    UserBooksModel,
     RefreshTokenResponseModel,
     RevokeTokenResponseModel,
 )
 from .service import UserService
-from .models import User
-from .utils import create_access_token, decode_token, verify_password
+from .utils import create_access_token, verify_password
 from .dependencies import (
     RefreshTokenBearer,
     AccessTokenBearer,
@@ -37,7 +37,9 @@ access_token_bearer = AccessTokenBearer()
 role_checker = RoleChecker(["admin", "user"])
 
 
-@auth_router.post("/signup", response_model=User, status_code=status.HTTP_201_CREATED)
+@auth_router.post(
+    "/signup", response_model=UserModel, status_code=status.HTTP_201_CREATED
+)
 async def create_user_account(
     user_data: UserCreateModel, session: AsyncSession = Depends(get_session)
 ):
@@ -136,7 +138,7 @@ async def get_new_access_token(token_details: dict = Depends(refresh_token_beare
     )
 
 
-@auth_router.get("/me", response_model=UserModel, status_code=status.HTTP_200_OK)
+@auth_router.get("/me", response_model=UserBooksModel, status_code=status.HTTP_200_OK)
 async def get_current_logged_user(
     user=Depends(get_current_user),
     _: bool = Depends(role_checker),  # This restricts the endpoint for authorized users

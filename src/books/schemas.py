@@ -3,10 +3,12 @@ Model schemas for the application.
 """
 
 from datetime import datetime, date
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel
 import uuid
+
+from src.reviews.schemas import ReviewModel
 
 
 class Book(BaseModel):
@@ -20,6 +22,10 @@ class Book(BaseModel):
     page_count: int
     language: str
     user_uid: Optional[uuid.UUID]
+
+
+class BookDetailModel(Book):
+    reviews: List[ReviewModel]
 
 
 class BookCreateModel(BaseModel):

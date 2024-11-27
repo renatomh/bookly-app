@@ -9,7 +9,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select, desc
 
 from .schemas import BookCreateModel, BookUpdateModel
-from .models import Book
+from src.db.models import Book
 
 
 class BookService:

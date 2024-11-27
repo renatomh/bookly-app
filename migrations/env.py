@@ -9,9 +9,8 @@ from alembic import context
 from sqlmodel import SQLModel
 from src.config import Config
 
-# We should import new models files here
-from src.auth.models import User
-from src.books.models import Book
+# We should import new models here
+from src.db.models import User, Book, Review
 
 
 # this is the Alembic Config object, which provides
