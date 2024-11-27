@@ -10,6 +10,7 @@ from fastapi.responses import JSONResponse
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from .schemas import (
+    UserModel,
     UserCreateModel,
     UserLoginModel,
     UserLoginResponseModel,
@@ -135,7 +136,7 @@ async def get_new_access_token(token_details: dict = Depends(refresh_token_beare
     )
 
 
-@auth_router.get("/me", response_model=User, status_code=status.HTTP_200_OK)
+@auth_router.get("/me", response_model=UserModel, status_code=status.HTTP_200_OK)
 async def get_current_logged_user(
     user=Depends(get_current_user),
     _: bool = Depends(role_checker),  # This restricts the endpoint for authorized users

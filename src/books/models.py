@@ -1,10 +1,13 @@
 """Models for the 'books' module."""
 
 from datetime import datetime, date
+from typing import Optional
 
-from sqlmodel import SQLModel, Field, Column
+from sqlmodel import SQLModel, Field, Column, Relationship
 import sqlalchemy.dialects.postgresql as pg
 import uuid
+
+from src.auth import models
 
 
 class Book(SQLModel, table=True):
@@ -37,6 +40,8 @@ class Book(SQLModel, table=True):
     published_date: date
     page_count: int
     language: str
+    user_uid: Optional[uuid.UUID] = Field(default=None, foreign_key="users.uid")
+    user: Optional["models.User"] = Relationship(back_populates="books")
 
     def __repr__(self):
         return f"<Book {self.title}>"

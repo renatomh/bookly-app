@@ -3,6 +3,7 @@ Model schemas for the application.
 """
 
 from datetime import datetime, date
+from typing import Optional
 
 from pydantic import BaseModel
 import uuid
@@ -18,6 +19,7 @@ class Book(BaseModel):
     published_date: date
     page_count: int
     language: str
+    user_uid: Optional[uuid.UUID]
 
 
 class BookCreateModel(BaseModel):

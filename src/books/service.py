@@ -3,6 +3,7 @@ Service for books CRUD.
 """
 
 from datetime import datetime
+import uuid
 
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select, desc
@@ -19,6 +20,19 @@ class BookService:
 
         return result.all()
 
+    async def get_user_books(
+        self, user_uid: uuid.UUID, session: AsyncSession
+    ) -> list[Book]:
+        statement = (
+            select(Book)
+            .where(Book.user_uid == user_uid)
+            .order_by(desc(Book.created_at))
+        )
+
+        result = await session.exec(statement)
+
+        return result.all()
+
     async def get_book(self, book_uid: str, session: AsyncSession) -> Book:
         statement = select(Book).where(Book.uid == book_uid)
 
@@ -26,7 +40,9 @@ class BookService:
 
         return result.first()
 
-    async def create_book(self, create_data: BookCreateModel, session: AsyncSession):
+    async def create_book(
+        self, create_data: BookCreateModel, user_uid: str, session: AsyncSession
+    ):
         book_data_dict = create_data.model_dump()
 
         new_book = Book(
@@ -36,6 +52,8 @@ class BookService:
         new_book.published_date = datetime.strptime(
             book_data_dict["published_date"], "%Y-%m-%d"
         )
+
+        new_book.user_uid = user_uid
 
         session.add(new_book)
 
