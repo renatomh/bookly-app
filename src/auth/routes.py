@@ -7,6 +7,7 @@ from datetime import datetime
 from fastapi import APIRouter, status, Depends
 from fastapi.responses import JSONResponse
 from sqlmodel.ext.asyncio.session import AsyncSession
+from fastapi_limiter.depends import RateLimiter
 
 from .schemas import (
     UserModel,
@@ -57,7 +58,10 @@ async def create_user_account(
 
 
 @auth_router.post(
-    "/login", response_model=UserLoginResponseModel, status_code=status.HTTP_200_OK
+    "/login",
+    response_model=UserLoginResponseModel,
+    status_code=status.HTTP_200_OK,
+    dependencies=[Depends(RateLimiter(times=2, seconds=10))],
 )
 async def login_users(
     login_data: UserLoginModel, session: AsyncSession = Depends(get_session)
