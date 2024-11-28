@@ -10,7 +10,7 @@ from sqlmodel import SQLModel
 from src.config import Config
 
 # We should import new models here
-from src.db.models import User, Book, Review
+from src.db.models import User, Book, Review, Tag, BookTag
 
 
 # this is the Alembic Config object, which provides
