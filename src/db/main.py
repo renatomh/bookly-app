@@ -10,7 +10,7 @@ from src.config import Config
 async_engine = AsyncEngine(
     create_engine(
         url=Config.database_url,
-        echo=True,
+        # echo=True,  # At the moment, we're disabling logs for the queries
     )
 )
 
