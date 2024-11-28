@@ -10,6 +10,7 @@ from src.auth.routes import auth_router
 from src.books.routes import book_router
 from src.reviews.routes import review_router
 from src.tags.routes import tags_router
+from .errors import register_all_errors
 
 
 @asynccontextmanager
@@ -28,6 +29,7 @@ app = FastAPI(
     version=VERSION,
     description="A REST API for a book review web service.",
 )
+register_all_errors(app)
 
 app.include_router(auth_router, prefix=f"/api/{VERSION}/auth", tags=["auth"])
 app.include_router(book_router, prefix=f"/api/{VERSION}/books", tags=["books"])

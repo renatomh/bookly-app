@@ -5,7 +5,6 @@ Routes for the authentication module.
 from datetime import datetime
 
 from fastapi import APIRouter, status, Depends
-from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -28,6 +27,7 @@ from .dependencies import (
 )
 from src.db.main import get_session
 from src.db.redis import add_jti_to_blocklist
+from src.errors import UserAlreadyExists, InvalidCredentials, InvalidToken
 
 auth_router = APIRouter()
 user_service = UserService()
@@ -49,10 +49,7 @@ async def create_user_account(
     user_exists = await user_service.user_exists(email, session)
 
     if user_exists:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="User with email already exists.",
-        )
+        raise UserAlreadyExists()
 
     new_user = await user_service.create_user(user_data, session)
 
@@ -72,18 +69,12 @@ async def login_users(
     user = await user_service.get_user_by_email(email, session)
 
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User/password combination does not match.",
-        )
+        raise InvalidCredentials()
 
     password_valid = verify_password(password, user.password_hash)
 
     if not password_valid:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User/password combination does not match.",
-        )
+        raise InvalidCredentials()
 
     access_token = create_access_token(
         user_data={
@@ -124,10 +115,7 @@ async def get_new_access_token(token_details: dict = Depends(refresh_token_beare
     expiry_timestamp = token_details["exp"]
 
     if datetime.fromtimestamp(expiry_timestamp) <= datetime.now():
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid or expired token.",
-        )
+        raise InvalidToken()
 
     new_access_token = create_access_token(user_data=token_details["user"])
 
