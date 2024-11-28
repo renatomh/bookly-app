@@ -1,11 +1,12 @@
 """Utils function for the authentication module."""
 
+import uuid
 from datetime import timedelta, datetime, timezone
 import logging
 
 from passlib.context import CryptContext
 import jwt
-import uuid
+from itsdangerous import URLSafeTimedSerializer
 
 from src.config import Config
 
@@ -68,3 +69,27 @@ def decode_token(token: str) -> dict:
     except jwt.PyJWTError as e:
         logging.exception(e)
         return None
+
+
+# Serializer for email verification
+serializer = URLSafeTimedSerializer(
+    secret_key=Config.JWT_SECRET,
+    salt="email-verification",
+)
+
+
+def create_url_safe_token(data: dict):
+    """Creates an URL safe token (for account verification, for example)."""
+    token = serializer.dumps(data)
+
+    return token
+
+
+def decode_url_safe_token(token: str):
+    """Decodes an URL safe token (for account verification, for example)."""
+    try:
+        token_data = serializer.loads(token)
+
+        return token_data
+    except Exception as e:
+        logging.error(str(e))

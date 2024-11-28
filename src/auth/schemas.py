@@ -47,6 +47,11 @@ class UserLoginSimplifiedModel(BaseModel):
     uid: uuid.UUID
 
 
+class UserCreateResponseModel(BaseModel):
+    message: str
+    user: UserModel
+
+
 class UserLoginResponseModel(BaseModel):
     message: str
     access_token: str
