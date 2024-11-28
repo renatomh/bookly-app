@@ -17,6 +17,7 @@ from .schemas import (
     UserBooksModel,
     RefreshTokenResponseModel,
     RevokeTokenResponseModel,
+    EmailModel,
 )
 from .service import UserService
 from .utils import create_access_token, verify_password
@@ -29,6 +30,7 @@ from .dependencies import (
 from src.db.main import get_session
 from src.db.redis import add_jti_to_blocklist
 from src.errors import UserAlreadyExists, InvalidCredentials, InvalidToken
+from src.mail import mail, create_message
 
 auth_router = APIRouter()
 user_service = UserService()
@@ -36,6 +38,24 @@ refresh_token_bearer = RefreshTokenBearer()
 access_token_bearer = AccessTokenBearer()
 # This will define routes allowed only for specified user roles
 role_checker = RoleChecker(["admin", "user"])
+
+
+@auth_router.post("/send-mail")
+async def send_mail(emails: EmailModel):
+    """Sends email to provided email addresses."""
+    emails = emails.addresses
+
+    html = "<h1>Welcome to the app</h1>"
+
+    message = create_message(
+        recipients=emails,
+        subject="Welcome",
+        body=html,
+    )
+
+    await mail.send_message(message)
+
+    return {"message": "Email sent successfully!"}
 
 
 @auth_router.post(

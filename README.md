@@ -105,6 +105,7 @@ In order to leave the virtual environment, you can simply execute the command be
 
 - [FastAPI Beyond CRUD Full Course - A FastAPI Course](https://youtu.be/TO4aQ3ghFOc?si=9fiydpdBQxgfhlgy)
 - [FastAPI Beyond CRUD](https://jod35.github.io/fastapi-beyond-crud-docs/site/)
+- [How to generate an app password](https://support.google.com/mail/thread/205453566?hl=en&msgid=208526631)
 
 ## 📄 License
 

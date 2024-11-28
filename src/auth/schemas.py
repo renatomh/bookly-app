@@ -60,3 +60,7 @@ class RefreshTokenResponseModel(BaseModel):
 
 class RevokeTokenResponseModel(BaseModel):
     message: str = "Logged out successfully!"
+
+
+class EmailModel(BaseModel):
+    addresses: List[str]
