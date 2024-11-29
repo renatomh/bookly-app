@@ -8,7 +8,10 @@ This project was developed to create a REST API for a book review web service, u
 
 ## 🔍 Features
 
--
+- Signup and login to the application
+- Create and manage books
+- Review the existing books
+- Add tags to the books
 
 ## 🛠 Technologies
 
@@ -18,6 +21,7 @@ During the development of this project, the following techologies were used:
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Redis](https://redis.io/)
+- [Celery](https://docs.celeryq.dev/en/stable/)
 - [Pydantic](https://docs.pydantic.dev/latest/)
 - [Alembic (Migrations)](https://alembic.sqlalchemy.org/en/latest/)
 - [SQLAlchemy (ORM)](https://www.sqlalchemy.org/)
@@ -89,10 +93,11 @@ To generate new revisions for the migrations, when there are changes to the appl
 
 ## ⏯️ Running
 
-To run the project in a development environment, execute the following command on the root directory, with the virtual environment activated.
+To run the project in a development environment, execute the following commands on the root directory, with the virtual environment activated.
 
 ```bash
 (env) $ make dev
+(env) $ make celery  # In another terminal
 ```
 
 In order to leave the virtual environment, you can simply execute the command below:

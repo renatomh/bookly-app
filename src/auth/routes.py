@@ -46,8 +46,8 @@ from src.errors import (
     UserNotFound,
     AccountNotVerified,
 )
-from src.mail import mail, create_message
 from src.config import Config
+from src.celery_tasks import send_email
 
 auth_router = APIRouter()
 user_service = UserService()
@@ -64,13 +64,8 @@ async def send_mail(emails: EmailModel):
 
     html = "<h1>Welcome to the app</h1>"
 
-    message = create_message(
-        recipients=emails,
-        subject="Welcome",
-        body=html,
-    )
-
-    await mail.send_message(message)
+    # Here, we're running a Celery task to send emails in background (with the '.delay' addition)
+    send_email.delay(emails, "Welcome", html)
 
     return {"message": "Email sent successfully!"}
 
@@ -104,14 +99,8 @@ async def create_user_account(
     <p>Please click this <a href="{link}">link</a> to verify your email.<p>
     """
 
-    message = create_message(
-        recipients=[email],
-        subject="Verify Your Email",
-        body=html_message,
-    )
-
-    # Sending email via background task
-    bg_tasks.add_task(mail.send_message, message)
+    # Here, we're running a Celery task to send emails in background (with the '.delay' addition)
+    send_email.delay([email], "Verify Your Email", html_message)
 
     return {
         "message": "Account Created! Check your email to verify the new account.",
@@ -263,13 +252,8 @@ async def password_reset_request(email_data: PasswordResetRequestModel):
     <p>Please click this <a href="{link}">link</a> to reset your password.<p>
     """
 
-    message = create_message(
-        recipients=[email],
-        subject="Reset your Password",
-        body=html_message,
-    )
-
-    await mail.send_message(message)
+    # Here, we're running a Celery task to send emails in background (with the '.delay' addition)
+    send_email.delay([email], "Reset your Password", html_message)
 
     return JSONResponse(
         content={

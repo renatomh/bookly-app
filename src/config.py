@@ -42,3 +42,8 @@ class Settings(BaseSettings):
 
 
 Config = Settings()
+
+# Celery configuration
+broker_url = Config.redis_url
+result_backend = Config.redis_url
+broker_connection_retry_on_startup = True
