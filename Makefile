@@ -29,6 +29,10 @@ migrateup:
 migratedown:
 	alembic downgrade base
 
+# This command tests the app, setting up deprecation warnings and logging options
+test:
+	pytest -W ignore::DeprecationWarning -v -p no:logging
+
 # This command starts the Celery app worker
 celery:
 	celery -A src.celery_tasks.c_app worker
@@ -45,4 +49,4 @@ dev:
 run:
 	fastapi run src/
 
-.PHONY: install-docker postgresql redis migrateup migratedown celery flower dev run
+.PHONY: install-docker postgresql redis migrateup migratedown test celery flower dev run
