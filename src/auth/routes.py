@@ -4,7 +4,7 @@ Routes for the authentication module.
 
 from datetime import datetime
 
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends, BackgroundTasks
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -81,7 +81,9 @@ async def send_mail(emails: EmailModel):
     status_code=status.HTTP_201_CREATED,
 )
 async def create_user_account(
-    user_data: UserCreateModel, session: AsyncSession = Depends(get_session)
+    user_data: UserCreateModel,
+    bg_tasks: BackgroundTasks,
+    session: AsyncSession = Depends(get_session),
 ):
     """Creates a new user account."""
     email = user_data.email
@@ -108,7 +110,8 @@ async def create_user_account(
         body=html_message,
     )
 
-    await mail.send_message(message)
+    # Sending email via background task
+    bg_tasks.add_task(mail.send_message, message)
 
     return {
         "message": "Account Created! Check your email to verify the new account.",
