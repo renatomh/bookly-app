@@ -44,6 +44,9 @@ app = FastAPI(
     version=VERSION,
     description="A REST API for a book review web service.",
     lifespan=life_span,
+    docs_url=f"/api/{VERSION}/docs",
+    redoc_url=f"/api/{VERSION}/redoc",
+    contact={"email": "renatomarinohenz@gmail.com"},
 )
 
 register_all_errors(app)

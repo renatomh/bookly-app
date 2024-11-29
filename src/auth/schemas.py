@@ -19,6 +19,18 @@ class UserCreateModel(BaseModel):
     first_name: str = Field(max_length=25)
     last_name: str = Field(max_length=25)
 
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "first_name": "John",
+                "last_name": "Doe",
+                "username": "johndoe",
+                "email": "johndoe123@domain.com",
+                "password": "testpass123",
+            }
+        }
+    }
+
 
 class UserModel(BaseModel):
     uid: uuid.UUID
