@@ -24,6 +24,7 @@ During the development of this project, the following techologies were used:
 - [Celery](https://docs.celeryq.dev/en/stable/)
 - [Flower](https://flower.readthedocs.io/en/latest/)
 - [Pydantic](https://docs.pydantic.dev/latest/)
+- [Schemathesis](https://schemathesis.readthedocs.io/en/stable/)
 - [Alembic (Migrations)](https://alembic.sqlalchemy.org/en/latest/)
 - [SQLAlchemy (ORM)](https://www.sqlalchemy.org/)
 - [Black Formatter](https://github.com/psf/black)
@@ -106,6 +107,28 @@ In order to leave the virtual environment, you can simply execute the command be
 
 ```bash
 (env) $ deactivate
+```
+
+## 🧪 Testing
+
+In order to make sure that the application's main features are working as expected, some tests were created to assert the functionalities.
+
+To allow the execution of the tests, first the required dependencies must be installed:
+
+```bash
+(env) $ pip install -r requirements-test.txt
+```
+
+The tests can then be run:
+
+```bash
+(env) $ make test
+```
+
+Also, you can use Schemathesis to run tests automatically generated from an OpenAPI specification:
+
+```bash
+(env) $ make schemathesis
 ```
 
 ### Documentation:

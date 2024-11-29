@@ -33,6 +33,10 @@ migratedown:
 test:
 	pytest -W ignore::DeprecationWarning -v -p no:logging
 
+# This command generates and run tests based on an OpenAPI specification
+schemathesis:
+	schemathesis run http://localhost:8000/openapi.json --checks all --experimental=openapi-3.1
+
 # This command starts the Celery app worker
 celery:
 	celery -A src.celery_tasks.c_app worker
@@ -49,4 +53,4 @@ dev:
 run:
 	fastapi run src/
 
-.PHONY: install-docker postgresql redis migrateup migratedown test celery flower dev run
+.PHONY: install-docker postgresql redis migrateup migratedown test schemathesis celery flower dev run
