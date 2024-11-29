@@ -30,6 +30,11 @@ class Settings(BaseSettings):
         """Construct the PostgreSQL connection URL."""
         return f"postgresql+asyncpg://{self.SQL_USER}:{self.SQL_PASS}@{self.SQL_HOST}:{self.SQL_PORT}/{self.SQL_DB}"
 
+    @property
+    def redis_url(self) -> str:
+        """Construct the Redis connection URL."""
+        return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/0"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         extra="ignore",

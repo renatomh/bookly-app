@@ -5,7 +5,7 @@ Main entrypoint for application.
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from fastapi_limiter import FastAPILimiter
-from aioredis import Redis
+import redis.asyncio as aioredis
 
 from src.db.main import init_db
 from src.auth.routes import auth_router
@@ -26,8 +26,8 @@ async def life_span(app: FastAPI):
     await init_db()
 
     # Initialize FastAPILimiter with Redis
-    redis = await Redis.from_url(
-        f"redis://{Config.REDIS_HOST}:{Config.REDIS_PORT}",
+    redis = await aioredis.from_url(
+        Config.redis_url,
         encoding="utf-8",
         decode_responses=True,
     )
