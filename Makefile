@@ -33,6 +33,10 @@ migratedown:
 celery:
 	celery -A src.celery_tasks.c_app worker
 
+# This command starts the Celery app flower monitoring tool
+flower:
+	celery -A src.celery_tasks.c_app flower
+
 # This command starts the application in dev mode 
 dev:
 	fastapi dev src/
@@ -41,4 +45,4 @@ dev:
 run:
 	fastapi run src/
 
-.PHONY: install-docker postgresql redis migrateup migratedown celery dev run
+.PHONY: install-docker postgresql redis migrateup migratedown celery flower dev run

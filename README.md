@@ -22,6 +22,7 @@ During the development of this project, the following techologies were used:
 - [PostgreSQL](https://www.postgresql.org/)
 - [Redis](https://redis.io/)
 - [Celery](https://docs.celeryq.dev/en/stable/)
+- [Flower](https://flower.readthedocs.io/en/latest/)
 - [Pydantic](https://docs.pydantic.dev/latest/)
 - [Alembic (Migrations)](https://alembic.sqlalchemy.org/en/latest/)
 - [SQLAlchemy (ORM)](https://www.sqlalchemy.org/)
@@ -98,6 +99,7 @@ To run the project in a development environment, execute the following commands 
 ```bash
 (env) $ make dev
 (env) $ make celery  # In another terminal
+(env) $ make flower  # In another terminal, for Celery tasks monitoring
 ```
 
 In order to leave the virtual environment, you can simply execute the command below:
