@@ -1,6 +1,6 @@
-<h1 align="center"><img alt="FastAPI Beyond CRUD" title="FastAPI Beyond CRUD" src=".github/logo.png" width="250" /></h1>
+<h1 align="center"><img alt="Bookly App" title="Bookly App" src=".github/logo.png" width="250" /></h1>
 
-# FastAPI Beyond CRUD
+# Bookly App
 
 ## 💡 Project's Idea
 
