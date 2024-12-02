@@ -97,6 +97,8 @@ To generate new revisions for the migrations, when there are changes to the appl
 
 To run the project in a development environment, execute the following commands on the root directory, with the virtual environment activated.
 
+**Note**: make sure the _PostgreSQL_ and _Redis_ servers to be used by the application are running and available.
+
 ```bash
 (env) $ make dev
 (env) $ make celery  # In another terminal
